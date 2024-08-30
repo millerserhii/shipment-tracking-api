@@ -1,0 +1,14 @@
+venv
+.dockerignore
+Dockerfile
+Dockerfile.prod
+.coveragerc
+htmlcov
+*.sql
+.mypy_cache
+.pytest_cache
+.isort.cfg
+TODO.txt
+README.md
+.vscode
+.kolo/

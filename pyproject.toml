@@ -1,0 +1,152 @@
+[tool.poetry]
+name = "parcelLab-api"
+version = "0.1.0"
+description = ""
+authors = ["Sergej Müller <mserh@proton.me>"]
+license = "MIT"
+readme = "README.md"
+
+[tool.poetry.dependencies]
+python = "^3.11"
+Django = "^5.0.7"
+djangorestframework = "^3.15.1"
+django-redis = "^5.4.0"
+redis = "^5.0.8"
+django-cors-headers = "^4.4.0"
+djoser = "^2.2.3"
+django-filter = "^24.2"
+whitenoise = "^6.7.0"
+django-simple-history = "^3.7.0"
+drf-flex-fields = "^1.0.2"
+gunicorn = "^23.0.0"
+psycopg2-binary = "^2.9.9"
+django-configurations = { version = "^2.5.1", extras = [
+  "cache",
+  "database",
+  "email",
+] }
+django-health-check = "^3.18.3"
+psutil = "^6.0.0"
+drf-spectacular = "^0.27.2"
+django-allow-cidr = "^0.7.1"
+
+[tool.poetry.group.dev.dependencies]
+pytest = "^8.3.2"
+debugpy = "^1.8.2"
+pytest-django = "^4.8.0"
+black = "^24.4.2"
+django-types = "^0.19.1"
+djangorestframework-types = "^0.8.0"
+model-bakery = "^1.18.2"
+mypy = "^1.11.1"
+pre-commit = "^3.8.0"
+pylint-django = "^2.5.5"
+pytest-cov = "^5.0.0"
+pylint = "^3.2.6"
+types-requests = "^2.32.0.20240712"
+kolo = "^2.33.4"
+pytest-mock = "^3.14.0"
+toml = "^0.10.2"
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
+
+[tool.isort]
+profile = "black"
+line_length = 79
+lines_after_imports = 2
+combine_as_imports = true
+
+[tool.black]
+line-length = 79
+
+[tool.flake8]
+exclude = "*migrations*"
+max-line-length = 79
+extend-select = "B901,B902,B903,B904,B906"
+extend-ignore = "E203"
+
+[tool.bandit]
+exclude_dirs = ["tests"]
+skips = ["B311"]
+
+[tool.bandit.assert_used]
+skips = ["tests/*"]
+
+[tool.pylint.main]
+django-settings-module = "backend.settings"
+ignore-paths = [".*/migrations"]
+init-hook = "import runpy; runpy.run_path('pylint_django_plugin.py');"
+load-plugins = ["pylint_django", "pylint_django.checkers.migrations"]
+
+[tool.pylint.basic]
+good-names-rgxs = [".\\d?"]
+
+[tool.pylint.format]
+max-line-length = 79
+
+[tool.pylint."messages control"]
+max-args = 7
+max-parents = 10
+disable = [
+  "duplicate-code",
+  "fixme",
+  "missing-class-docstring",
+  "missing-function-docstring",
+  "missing-module-docstring",
+  "too-few-public-methods",
+  "unsubscriptable-object",
+  "unnecessary-dunder-call",
+  "too-many-ancestors",
+  "too-many-locals",
+  "redefined-outer-name",
+]
+
+[tool.pytest.ini_options]
+DJANGO_SETTINGS_MODULE = "backend.settings"
+DJANGO_CONFIGURATION = "Base"
+minversion = "6.0"
+addopts = "-ra -q --disable-warnings"
+pythonpath = "src"
+
+
+[tool.coverage.run]
+branch = true
+
+[tool.coverage.report]
+precision = 2
+show_missing = true
+skip_covered = true
+skip_empty = true
+
+[tool.mypy]
+explicit_package_bases = true
+mypy_path = ["."]
+check_untyped_defs = true
+exclude = ["migrations"]
+disallow_any_generics = true
+disallow_incomplete_defs = true
+disallow_untyped_calls = true
+disallow_untyped_defs = true
+ignore_missing_imports = true
+no_implicit_optional = true
+no_implicit_reexport = true
+extra_checks = true
+strict_equality = true
+strict_optional = true
+warn_no_return = true
+warn_redundant_casts = true
+warn_unreachable = true
+warn_unused_configs = true
+warn_unused_ignores = true
+
+[tool.django-stubs]
+django_settings_module = "backend.settings"
+
+[tool.autoflake]
+remove-all-unused-imports = true
+remove-unused-variables = true
+
+[tool.pyupgrade]
+py311-plus = true
