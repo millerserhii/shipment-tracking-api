@@ -1,3 +1,6 @@
+from collections.abc import Generator
+from unittest.mock import MagicMock, patch
+
 import pytest
 from django.contrib.auth import get_user_model
 from django.contrib.auth.models import AbstractBaseUser
@@ -51,3 +54,9 @@ def http_request() -> HttpRequest:
     request.method = "GET"
     request.path = "/test-url/"
     return request
+
+
+@pytest.fixture
+def mock_requests_get() -> Generator[MagicMock, None, None]:
+    with patch("requests.get") as mock_get:
+        yield mock_get
