@@ -232,7 +232,7 @@ class Base(Configuration):
     CACHE_CONN_STRING = "redis://"
 
     WEATHER_API_URL = values.URLValue("https://api.weatherbit.io/v2.0/current")
-    WEATHER_API_KEY = values.SecretValue()
+    WEATHER_API_KEY = values.Value("your-api-key")
 
 
 class Dev(Base):
