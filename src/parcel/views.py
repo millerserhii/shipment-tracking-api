@@ -29,4 +29,10 @@ class UserShipmentViewSet(BaseUserOwnedViewSet):
     queryset = UserShipment.objects.all()
     serializer_class = UserShipmentSerializer
     permission_classes = [AllowObjOwnerReadOnly]
-    filterset_fields = ["user", "article", "carrier", "status"]
+    filterset_fields = [
+        "user",
+        "article",
+        "carrier",
+        "status",
+        "tracking_number",
+    ]
