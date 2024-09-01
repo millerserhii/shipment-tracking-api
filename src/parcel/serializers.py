@@ -1,6 +1,9 @@
 from rest_flex_fields import FlexFieldsModelSerializer
+from rest_framework import serializers
+from rest_framework.exceptions import ValidationError
 
 from parcel.models import Address, Article, UserShipment
+from weather.services.weather_api import get_weather
 
 
 class AddressSerializer(FlexFieldsModelSerializer):
@@ -29,6 +32,8 @@ class ArticleSerializer(FlexFieldsModelSerializer):
 
 
 class UserShipmentSerializer(FlexFieldsModelSerializer):
+    receiver_weather = serializers.SerializerMethodField()
+
     class Meta:
         model = UserShipment
         fields = [
@@ -42,6 +47,7 @@ class UserShipmentSerializer(FlexFieldsModelSerializer):
             "status",
             "sender_address",
             "receiver_address",
+            "receiver_weather",
         ]
 
         expandable_fields = {
@@ -49,3 +55,11 @@ class UserShipmentSerializer(FlexFieldsModelSerializer):
             "sender_address": AddressSerializer,
             "receiver_address": AddressSerializer,
         }
+
+    def get_receiver_weather(self, obj: UserShipment) -> dict[str, str]:
+        try:
+            return get_weather(
+                obj.receiver_address.postal_code, obj.receiver_address.country
+            ).get("data")
+        except ValidationError:
+            return {"error": "Error in getting weather data"}
